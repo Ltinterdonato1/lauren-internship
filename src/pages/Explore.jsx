@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SubHeader from "../images/subheader.jpg";
 import ExploreItems from "../components/explore/ExploreItems";
 import axios from "axios";
+import AOS from 'aos';
 
 const Explore = () => {
   const [items, setItems] = useState([]);
@@ -10,6 +11,7 @@ const Explore = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    AOS.refresh();
 
     async function fetchExploreItems() {
       setLoading(true);
@@ -39,6 +41,7 @@ const Explore = () => {
           id="subheader"
           className="text-light"
           style={{ background: `url("${SubHeader}") top` }}
+          data-aos="fade-in"
         >
           <div className="center-y relative text-center">
             <div className="container">
@@ -55,9 +58,7 @@ const Explore = () => {
         <section aria-label="section">
           <div className="container">
             <div className="row">
-              {/* We pass 'setFilter' down so ExploreItems can 
-                  handle the dropdown change logic 
-              */}
+              {/* Removed the data-aos wrapper here so the row/col logic works */}
               <ExploreItems 
                 items={items} 
                 loading={loading} 

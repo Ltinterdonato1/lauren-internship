@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import EthImage from "../images/ethereum.svg";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import AOS from 'aos'; 
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -10,17 +11,14 @@ const ItemDetails = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    AOS.refresh();
 
     async function getNftDetails() {
       setLoading(true);
       try {
-        // We use the 'id' from the URL to fetch data dynamically.
-        // If you want to test specifically with the link you provided, 
-        // you can visit /item-details/17914494 in your browser.
         const { data } = await axios.get(
           `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`
         );
-        
         setNft(data);
       } catch (error) {
         console.error("Error fetching NFT details:", error);
@@ -42,7 +40,6 @@ const ItemDetails = () => {
           <div className="container">
             <div className="row">
               {loading ? (
-                // --- SKELETON STATE ---
                 <>
                   <div className="col-md-6 text-center">
                     <div className="skeleton-box" style={{ width: "100%", height: "100%", minHeight: "400px" }}></div>
@@ -56,18 +53,17 @@ const ItemDetails = () => {
                   </div>
                 </>
               ) : (
-                // --- DYNAMIC DATA STATE ---
                 <>
-                  <div className="col-md-6 text-center">
+                  <div className="col-md-6 text-center" data-aos="fade-right" data-aos-duration="800">
                     <img
                       src={nft?.nftImage}
                       className="img-fluid img-rounded mb-sm-30 nft-image"
                       alt={nft?.title}
                     />
                   </div>
-                  <div className="col-md-6">
+                  
+                  <div className="col-md-6" data-aos="fade-left" data-aos-duration="800">
                     <div className="item_info">
-                      {/* Displays the title and tag, e.g., Skecthify #942 */}
                       <h2>{nft?.title} #{nft?.tag}</h2>
 
                       <div className="item_info_counts">

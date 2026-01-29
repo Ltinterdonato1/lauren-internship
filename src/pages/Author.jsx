@@ -3,6 +3,7 @@ import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import AOS from 'aos'; 
 
 const Author = () => {
   const { id } = useParams();
@@ -12,16 +13,14 @@ const Author = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    AOS.refresh();
 
     async function getAuthorData() {
       setLoading(true);
       try {
-        // Updated to use the 'author=' parameter from your provided API link
         const { data } = await axios.get(
           `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`
         );
-        
-        // Setting the author data from the response
         setAuthor(data);
       } catch (error) {
         console.error("Error fetching author data:", error);
@@ -47,13 +46,14 @@ const Author = () => {
             height: "300px", 
             backgroundSize: "cover" 
           }}
+          data-aos="fade-in"
         ></section>
 
         <section aria-label="section">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <div className="d_profile de-flex">
+                <div className="d_profile de-flex" data-aos="fade-up" data-aos-delay="200">
                   <div className="de-flex-col">
                     <div className="profile_avatar">
                       {loading ? (
@@ -113,7 +113,7 @@ const Author = () => {
               </div>
 
               <div className="col-md-12">
-                <div className="de_tab tab_simple">
+                <div className="de_tab tab_simple" data-aos="fade-up" data-aos-delay="400">
                   <AuthorItems 
                     nftData={author?.nftCollection} 
                     authorImage={author?.authorImage} 
