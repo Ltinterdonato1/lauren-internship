@@ -58,7 +58,6 @@ const Explore = () => {
         <section aria-label="section">
           <div className="container">
             <div className="row">
-              {/* Removed the data-aos wrapper here so the row/col logic works */}
               <ExploreItems 
                 items={items} 
                 loading={loading} 

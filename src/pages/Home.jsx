@@ -15,7 +15,6 @@ const Home = () => {
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
         <div id="top"></div>
-        {/* Landing usually stays static or uses a simple fade-in */}
         <div data-aos="fade-in">
           <Landing />
         </div>
