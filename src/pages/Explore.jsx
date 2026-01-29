@@ -1,11 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SubHeader from "../images/subheader.jpg";
 import ExploreItems from "../components/explore/ExploreItems";
+import axios from "axios";
 
 const Explore = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+
+    async function fetchExploreItems() {
+      setLoading(true);
+      try {
+        const url = filter 
+          ? `https://us-central1-nft-cloud-functions.cloudfunctions.net/explore?filter=${filter}`
+          : "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
+        
+        const { data } = await axios.get(url);
+        setItems(data);
+      } catch (error) {
+        console.error("Error fetching explore items:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchExploreItems();
+  }, [filter]);
 
   return (
     <div id="wrapper">
@@ -32,7 +55,14 @@ const Explore = () => {
         <section aria-label="section">
           <div className="container">
             <div className="row">
-              <ExploreItems />
+              {/* We pass 'setFilter' down so ExploreItems can 
+                  handle the dropdown change logic 
+              */}
+              <ExploreItems 
+                items={items} 
+                loading={loading} 
+                setFilter={setFilter} 
+              />
             </div>
           </div>
         </section>
