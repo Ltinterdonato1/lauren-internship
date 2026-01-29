@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import EthImage from "../images/ethereum.svg";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import AOS from 'aos'; 
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -11,7 +10,6 @@ const ItemDetails = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    AOS.refresh();
 
     async function getNftDetails() {
       setLoading(true);
@@ -42,7 +40,7 @@ const ItemDetails = () => {
               {loading ? (
                 <>
                   <div className="col-md-6 text-center">
-                    <div className="skeleton-box" style={{ width: "100%", height: "100%", minHeight: "400px" }}></div>
+                    <div className="skeleton-box" style={{ width: "100%", height: "400px" }}></div>
                   </div>
                   <div className="col-md-6">
                     <div className="item_info">
@@ -54,7 +52,8 @@ const ItemDetails = () => {
                 </>
               ) : (
                 <>
-                  <div className="col-md-6 text-center" data-aos="fade-right" data-aos-duration="800">
+                  {/* AOS attributes removed below */}
+                  <div className="col-md-6 text-center">
                     <img
                       src={nft?.nftImage}
                       className="img-fluid img-rounded mb-sm-30 nft-image"
@@ -62,7 +61,7 @@ const ItemDetails = () => {
                     />
                   </div>
                   
-                  <div className="col-md-6" data-aos="fade-left" data-aos-duration="800">
+                  <div className="col-md-6">
                     <div className="item_info">
                       <h2>{nft?.title} #{nft?.tag}</h2>
 
