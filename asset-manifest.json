@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/lauren-internship/static/css/main.4636e60d.css",
-    "main.js": "/lauren-internship/static/js/main.80ca964a.js",
+    "main.js": "/lauren-internship/static/js/main.66b26904.js",
     "static/js/787.0979ab29.chunk.js": "/lauren-internship/static/js/787.0979ab29.chunk.js",
     "static/media/icofont.woff": "/lauren-internship/static/media/icofont.dad3accba068281878f1.woff",
     "static/media/icofont.woff2": "/lauren-internship/static/media/icofont.9c33516aab48c61e3081.woff2",
@@ -25,11 +25,11 @@
     "index.html": "/lauren-internship/index.html",
     "static/media/ethereum.svg": "/lauren-internship/static/media/ethereum.df265e367364f285053a1285ad8d418d.svg",
     "main.4636e60d.css.map": "/lauren-internship/static/css/main.4636e60d.css.map",
-    "main.80ca964a.js.map": "/lauren-internship/static/js/main.80ca964a.js.map",
+    "main.66b26904.js.map": "/lauren-internship/static/js/main.66b26904.js.map",
     "787.0979ab29.chunk.js.map": "/lauren-internship/static/js/787.0979ab29.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4636e60d.css",
-    "static/js/main.80ca964a.js"
+    "static/js/main.66b26904.js"
   ]
 }
