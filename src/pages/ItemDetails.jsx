@@ -14,9 +14,13 @@ const ItemDetails = () => {
     async function getNftDetails() {
       setLoading(true);
       try {
+        // We use the 'id' from the URL to fetch data dynamically.
+        // If you want to test specifically with the link you provided, 
+        // you can visit /item-details/17914494 in your browser.
         const { data } = await axios.get(
           `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`
         );
+        
         setNft(data);
       } catch (error) {
         console.error("Error fetching NFT details:", error);
@@ -63,7 +67,8 @@ const ItemDetails = () => {
                   </div>
                   <div className="col-md-6">
                     <div className="item_info">
-                      <h2>{nft?.title}</h2>
+                      {/* Displays the title and tag, e.g., Skecthify #942 */}
+                      <h2>{nft?.title} #{nft?.tag}</h2>
 
                       <div className="item_info_counts">
                         <div className="item_info_views">
@@ -83,7 +88,7 @@ const ItemDetails = () => {
                           <div className="item_author">
                             <div className="author_list_pp">
                               <Link to={`/author/${nft?.ownerId}`}>
-                                <img className="lazy" src={nft?.ownerImage} alt="" />
+                                <img className="lazy" src={nft?.ownerImage} alt={nft?.ownerName} />
                                 <i className="fa fa-check"></i>
                               </Link>
                             </div>
@@ -92,15 +97,12 @@ const ItemDetails = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
-
-                      <div className="de_tab tab_simple">
-                        <div className="de_tab_content">
+                        <div>
                           <h6>Creator</h6>
                           <div className="item_author">
                             <div className="author_list_pp">
                               <Link to={`/author/${nft?.creatorId}`}>
-                                <img className="lazy" src={nft?.creatorImage} alt="" />
+                                <img className="lazy" src={nft?.creatorImage} alt={nft?.creatorName} />
                                 <i className="fa fa-check"></i>
                               </Link>
                             </div>
@@ -109,12 +111,13 @@ const ItemDetails = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="spacer-40"></div>
-                        <h6>Price</h6>
-                        <div className="nft-item-price">
-                          <img src={EthImage} alt="" />
-                          <span>{nft?.price}</span>
-                        </div>
+                      </div>
+
+                      <div className="spacer-40"></div>
+                      <h6>Price</h6>
+                      <div className="nft-item-price">
+                        <img src={EthImage} alt="ETH" />
+                        <span>{nft?.price} ETH</span>
                       </div>
                     </div>
                   </div>
