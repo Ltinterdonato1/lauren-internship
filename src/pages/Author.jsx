@@ -8,46 +8,31 @@ const Author = () => {
   const { id } = useParams();
   const [author, setAuthor] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    async function fetchAuthor() {
+    async function getAuthorData() {
       setLoading(true);
       try {
+        // Updated to use the 'author=' parameter from your provided API link
         const { data } = await axios.get(
-          "https://us-central1-nft-cloud-functions.cloudfunctions.net/authors"
+          `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`
         );
-
-        if (Array.isArray(data)) {
-          const found = data.find((a) => 
-            String(a.authorId || a.id || a.AuthorId || a.userId || a.ID) === String(id)
-          );
-
-          if (found) {
-            setAuthor({
-              authorName: found.authorName || found.name || found.AuthorName || "Unknown Author",
-              tag: found.tag || found.username || found.handle || found.userName || "",
-              authorImage: found.authorImage || found.image || found.avatar || found.pp || "",
-              address: found.address || found.wallet || found.walletAddress || "",
-              followers: Number(found.followers || found.followerCount || 0),
-              nftCollection: found.nftCollection || found.nfts || found.items || [],
-            });
-          } else {
-            setAuthor(null);
-          }
-        } else {
-          setAuthor(null);
-        }
+        
+        // Setting the author data from the response
+        setAuthor(data);
       } catch (error) {
-        console.error("Error fetching authors:", error);
-        setAuthor(null);
+        console.error("Error fetching author data:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    if (id) fetchAuthor();
+    if (id) {
+      getAuthorData();
+    }
   }, [id]);
 
   return (
@@ -57,10 +42,10 @@ const Author = () => {
         <section
           id="profile_banner"
           aria-label="section"
-          style={{
-            background: `url(${AuthorBanner}) center`,
-            height: "300px",
-            backgroundSize: "cover",
+          style={{ 
+            background: `url(${AuthorBanner}) center`, 
+            height: "300px", 
+            backgroundSize: "cover" 
           }}
         ></section>
 
@@ -72,40 +57,34 @@ const Author = () => {
                   <div className="de-flex-col">
                     <div className="profile_avatar">
                       {loading ? (
-                        <div className="skeleton-box" style={{ width: "150px", height: "150px", borderRadius: "100%" }} />
-                      ) : author ? (
-                        <img src={author.authorImage} alt="author" />
+                        <div className="skeleton-box" style={{ width: "150px", height: "150px", borderRadius: "100%" }}></div>
                       ) : (
-                        <div className="skeleton-box" style={{ width: "150px", height: "150px", borderRadius: "100%" }} />
+                        <img src={author?.authorImage} alt="author" />
                       )}
                       <i className="fa fa-check"></i>
                       <div className="profile_name">
                         <h4>
                           {loading ? (
-                            <div className="skeleton-box" style={{ width: "200px", height: "26px" }} />
-                          ) : author ? (
-                            author.authorName
+                            <div className="skeleton-box" style={{ width: "200px", height: "26px" }}></div>
                           ) : (
-                            "Author Not Found"
+                            author?.authorName
                           )}
                           <span className="profile_username">
                             {loading ? (
-                              <div className="skeleton-box" style={{ width: "100px", height: "20px" }} />
-                            ) : author?.tag ? (
-                              `@${author.tag}`
+                              <div className="skeleton-box" style={{ width: "100px", height: "20px" }}></div>
                             ) : (
-                              ""
+                              author?.tag ? `@${author.tag}` : ""
                             )}
                           </span>
                           <span id="wallet" className="profile_wallet">
                             {loading ? (
-                              <div className="skeleton-box" style={{ width: "250px", height: "20px" }} />
-                            ) : author?.address || "No wallet address"}
+                              <div className="skeleton-box" style={{ width: "250px", height: "20px" }}></div>
+                            ) : (
+                              author?.address
+                            )}
                           </span>
-                          {!loading && author?.address && (
-                            <button id="btn_copy" title="Copy Text" className="btn-main" style={{ marginLeft: "10px", padding: "4px 12px" }}>
-                              Copy
-                            </button>
+                          {!loading && author && (
+                            <button id="btn_copy" title="Copy Text" className="btn-main" style={{marginLeft: "10px", padding: "4px 12px"}}>Copy</button>
                           )}
                         </h4>
                       </div>
@@ -115,14 +94,19 @@ const Author = () => {
                   <div className="profile_follow de-flex">
                     <div className="de-flex-col">
                       {loading ? (
-                        <div className="skeleton-box" style={{ width: "150px", height: "40px" }} />
-                      ) : author ? (
-                        <>
-                          <div className="profile_follower">
-                            {author.followers} followers
-                          </div>
-                        </>
-                      ) : null}
+                        <div className="skeleton-box" style={{ width: "150px", height: "40px" }}></div>
+                      ) : (
+                        author && (
+                          <>
+                            <div className="profile_follower">
+                              {following ? (author.followers || 0) + 1 : (author.followers || 0)} followers
+                            </div>
+                            <button className="btn-main" onClick={() => setFollowing(!following)}>
+                              {following ? "Unfollow" : "Follow"}
+                            </button>
+                          </>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
@@ -131,8 +115,8 @@ const Author = () => {
               <div className="col-md-12">
                 <div className="de_tab tab_simple">
                   <AuthorItems 
-                    nftData={author?.nftCollection || []} 
-                    authorImage={author?.authorImage}
+                    nftData={author?.nftCollection} 
+                    authorImage={author?.authorImage} 
                     loading={loading}
                   />
                 </div>
